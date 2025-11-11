@@ -71,7 +71,7 @@ router.delete('/:id', (req, res) => {
 
 /* PUT /data/:id – actualitzar i retornar el registre actualitzat */
 router.put('/:id', (req, res) => {
-  // 1) Acceptar només JSON
+  // Acceptar només JSON
   if (!req.is('application/json')) {
     return res.status(415).end(); // Unsupported Media Type
   }
@@ -79,15 +79,15 @@ router.put('/:id', (req, res) => {
   const id = Number(req.params.id);
   const fid = data.findIndex(item => item.id === id);  // <- HINT: findIndex
 
-  // 2) Si no existeix → 404
+  // Si no existeix → 404
   if (fid === -1) {
     return res.status(404).end();
   }
 
-  // 3) Actualització "in place" (HINT: update camp per camp)
+  
   //    Manté els valors existents i sobreescriu els que arriben.
   const payload = req.body || {};
-  const updated = { ...data[fid], ...payload, id };    // id de la URL mana
+  const updated = { ...data[fid], ...payload, id };   
   data[fid] = updated;
 
   // 4) Retorna el registre actualitzat
@@ -112,7 +112,7 @@ router.put('/:id', (req, res) => {
   }
 
   // UPDATE si existeix
-  const updated = { ...data[fid], ...payload, id }; // id de la URL mana
+  const updated = { ...data[fid], ...payload, id }; // id de la Url
   data[fid] = updated;
   return res.status(200).json(updated);             // 200 OK
 });
@@ -126,17 +126,16 @@ router.post('/search', (req, res) => {
   }
 
   const { forename } = req.body || {};
-  // (Validació bàsica opcional)
+ 
   if (typeof forename !== 'string' || forename.trim() === '') {
     return res.status(404).json({ error: 'User not found' }); // o 422 si vols ser estricte
   }
 
   const needle = forename.trim().toLowerCase();
 
-  // Cerca (case-insensitive). Pots fer-la exacta si vols.
+  
   const matches = data
     .filter(u => (u.forename || '').toLowerCase() === needle)
-    // Per ajustar-te a l’exemple del profe, no retornem l'id
     .map(u => ({ forename: u.forename, surname: u.surname }));
 
   if (matches.length === 0) {
@@ -147,4 +146,5 @@ router.post('/search', (req, res) => {
 });
 
 
+//per pujar
 export default router
