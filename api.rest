@@ -1,0 +1,181 @@
+### test GET /users
+GET http://localhost:3000/users
+
+### test GET /users
+GET http://localhost:3000/users
+Accept: application/json
+
+### test GET /data csv
+GET http://localhost:3000/users
+Accept: text/csv
+
+### test GET /users/1
+GET http://localhost:3000/users/1
+
+### test GET /users/9 that does not exist
+GET http://localhost:3000/users/9
+
+### test POST /users
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "forename":"Jyri",
+    "surname":"Kemppainen"
+}
+
+### test PUT
+POST http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+    "forename": "Petri",
+    "surname": "Laitinen"
+}
+
+### Assignment 2. Doc page: https://developer.webex.com/messaging/docs/api/v1/rooms/list-rooms
+GET  https://webexapis.com/v1/rooms
+Authorization: Bearer MGU0ZDkxNDItM2YxYy00YzVmLTg5YjUtOTA0ODI5M2I2NGFkNjAxMzUxZjgtMjVj_P0A1_a9abfdab-59bd-465e-91ee-a46ce4872278
+
+### Assignment 2: GET /messages. Doc page: https://developer.webex.com/messaging/docs/api/v1/messages/list-messages
+GET  https://webexapis.com/v1/messages?roomId=Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vMGJkYjJlNDAtODYxYS0xMWVmLTk1MTgtMTkxY2E0MzUwMDk4
+Authorization: Bearer MGU0ZDkxNDItM2YxYy00YzVmLTg5YjUtOTA0ODI5M2I2NGFkNjAxMzUxZjgtMjVj_P0A1_a9abfdab-59bd-465e-91ee-a46ce4872278
+
+### Assignment 2 POST /messages. Doc page: https://developer.webex.com/messaging/docs/api/v1/messages/create-a-message
+POST  https://webexapis.com/v1/messages
+Authorization: Bearer MGU0ZDkxNDItM2YxYy00YzVmLTg5YjUtOTA0ODI5M2I2NGFkNjAxMzUxZjgtMjVj_P0A1_a9abfdab-59bd-465e-91ee-a46ce4872278
+Content-Type: application/json
+
+{
+    "roomId": "Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vMGJkYjJlNDAtODYxYS0xMWVmLTk1MTgtMTkxY2E0MzUwMDk4",
+    "text": "Hello you all API developers!"
+}
+
+###Assignment 5 POST /DATA (if 201 === OK)
+//Test A
+POST http://localhost:3000/data
+Content-Type: application/json
+
+{
+    "id": 5,
+    "forename": "Lluc",
+    "surname": "Navarro"
+}
+//test B
+### Delete (per provar)
+POST http://localhost:3000/data
+Content-Type: application/json
+
+{
+  "id": 10,
+  "forename": "DeleteMe",
+  "surname": "Test"
+}
+
+### DELETE the id 10 for test (sense body)
+DELETE http://localhost:3000/data/10
+
+
+//Test C
+### Seed per provar
+POST http://localhost:3000/data
+Content-Type: application/json
+
+{
+  "id": 21,
+  "forename": "Joan",
+  "surname": "Carles"
+}
+
+### UPDATE OK → 200 (retorna l'actualitzat)
+PUT http://localhost:3000/data/21
+Content-Type: application/json
+
+{
+  "surname": "New",
+  "email": "JoanCarles@edu.karelia.fi"
+}
+
+### Comprovar
+GET http://localhost:3000/data/21
+
+### 404 si no existeix
+PUT http://localhost:3000/data/999
+Content-Type: application/json
+
+{ "surname": "Whatever" }
+
+### 415 si no és JSON
+PUT http://localhost:3000/data/21
+Content-Type: text/plain
+
+surname=Bad
+
+
+//test D
+
+### CREATE via PUT (no existeix → 201)
+PUT http://localhost:3000/data/21
+Content-Type: application/json
+
+{
+  "forename": "Anna",
+  "surname": "New"
+}
+
+### Repetir el mateix PUT (idempotent → 200)
+PUT http://localhost:3000/data/21
+Content-Type: application/json
+
+{
+  "forename": "Anna",
+  "surname": "New"
+}
+
+### UPDATE d’un existent (ex: 21) → 200
+PUT http://localhost:3000/data/21
+Content-Type: application/json
+
+{
+  "email": "anna@edu.karelia.fi"
+}
+
+### 415 si no és JSON
+PUT http://localhost:3000/data/21
+Content-Type: text/plain
+
+surname=Bad
+
+//Part final e
+### Seed (creem Roy per provar)
+POST http://localhost:3000/data
+Content-Type: application/json
+
+{
+  "id": 98765,
+  "forename": "Roy",
+  "surname": "Fielding"
+}
+
+### SEARCH OK → 200
+POST http://localhost:3000/data/search
+Content-Type: application/json
+
+{
+  "forename": "Roy"
+}
+
+### SEARCH no trobat → 404
+POST http://localhost:3000/data/search
+Content-Type: application/json
+
+{
+  "forename": "NoExiste"
+}
+
+### 415 si no és JSON
+POST http://localhost:3000/data/search
+Content-Type: text/plain
+
+forename=Roy
+
