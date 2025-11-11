@@ -77,7 +77,7 @@ DELETE http://localhost:3000/data/10
 
 
 //Test C
-### Seed per provar
+// per provar
 POST http://localhost:3000/data
 Content-Type: application/json
 
@@ -147,7 +147,7 @@ Content-Type: text/plain
 surname=Bad
 
 //Part final e
-### Seed (creem Roy per provar)
+### per provar)
 POST http://localhost:3000/data
 Content-Type: application/json
 
@@ -179,3 +179,5 @@ Content-Type: text/plain
 
 forename=Roy
 
+
+//Guerdar github
