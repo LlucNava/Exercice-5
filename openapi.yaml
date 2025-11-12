@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Simple Data API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /data:
+    get:
+      summary: Returns a dataset
+      responses:
+        '200':
+          description: List of data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataOutput'
+            text/csv:
+              schema:
+                type: string
+    post:
+      summary: Create a new data item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataInput'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataOutput'
+        '415':
+          description: Unsupported Media Type
+
+  /data/query:
+    post:
+      summary: Query by forename
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryInput'
+      responses:
+        '200':
+          description: Matching results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataOutput'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '415':
+          description: Unsupported Media Type
+
+  /data/{id}:
+    delete:
+      summary: Delete item by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Deleted
+        '404':
+          description: Not found
+
+components:
+  schemas:
+    DataInput:
+      type: object
+      required: [forename, surname]
+      properties:
+        forename: { type: string, example: Roy }
+        surname:  { type: string, example: Fielding }
+    DataOutput:
+      allOf:
+        - $ref: '#/components/schemas/DataInput'
+        - type: object
+          required: [id]
+          properties:
+            id: { type: integer, example: 1 }
+    QueryInput:
+      type: object
+      required: [forename]
+      properties:
+        forename: { type: string, example: Roy }
+    ErrorResponse:
+      type: object
+      properties:
+        error: { type: string, example: User not found }
